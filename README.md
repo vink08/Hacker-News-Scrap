@@ -121,11 +121,11 @@ ws.onclose = function() {
 ### Story Object Structure
 ```javascript
 {
-    "id": Number,          // Auto-incremented ID
-    "title": String,       // Story title
-    "url": String,        // Story URL
-    "points": Number,     // Current points/upvotes
-    "posted_at": String   // ISO timestamp
+    "id": Number,          
+    "title": String,       
+    "url": String,        
+    "points": Number,     
+    "posted_at": String  
 }
 ```
 
@@ -135,8 +135,8 @@ ws.onclose = function() {
 ```javascript
 {
     type: 'initial',
-    count: Number,        // Total stories in last 5 minutes
-    stories: Story[]      // Array of story objects
+    count: Number,        
+    stories: Story[]     
 }
 ```
 
@@ -144,7 +144,7 @@ ws.onclose = function() {
 ```javascript
 {
     type: 'update',
-    stories: Story[]      // Array of new stories
+    stories: Story[]    
 }
 ```
 
