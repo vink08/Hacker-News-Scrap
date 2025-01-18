@@ -11,6 +11,10 @@ const Story = sequelize.define('Story', {
         type: DataTypes.STRING,
         allowNull: false,
     },
+    points :{
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     posted_at: {
         type: DataTypes.DATE,
         allowNull: false,
