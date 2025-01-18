@@ -8,13 +8,13 @@ const app = express();
 const server = http.createServer(app);
 
 scrapeHackerNews().catch((error) => {
-    console.error('Error during initial scrape:', error);
+    console.error('Error during initial scrape:', error);   // Used for scrapping from Hacker News 
 });
 
-setupWebSocket(server);
+setupWebSocket(server); // This aims to make the connection between the client and server by using by test.html which in controllers
 
-app.get('/health', (req, res) => {
-    res.send('OK');
+app.get('/', (req, res) => {
+    res.send('Im working now');
 });
 
 app.get('/stories', async (req, res) => {
