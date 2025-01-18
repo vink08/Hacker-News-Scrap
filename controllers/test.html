@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hacker News Real-time Feed</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .story { padding: 10px; border-bottom: 1px solid #eee; }
+        .initial-count { font-weight: bold; margin-bottom: 20px; }
+        .loading { font-size: 16px; color: gray; margin-bottom: 20px; }
+        @media (max-width: 600px) {
+            body { font-size: 14px; }
+            .story h3 { font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="loading">Loading stories...</div>
+    <div class="initial-count"></div>
+    <div id="stories"></div>
+    <script>
+        const ws = new WebSocket(`ws://localhost:8080`);
+        const renderedStoryUrls = new Set();
+
+        ws.onmessage = function(event) {
+            const data = JSON.parse(event.data);
+            const storiesDiv = document.getElementById('stories');
+            const countDiv = document.querySelector('.initial-count');
+
+            if (data.type === 'initial') {
+                const loadingDiv = document.querySelector('.loading');
+                if (loadingDiv) loadingDiv.remove();
+
+                countDiv.textContent = `Stories from last 5 minutes: ${data.count}`;
+                data.stories.forEach(story => {
+                    addStory(story);
+                });
+            } else if (data.type === 'update') {
+                data.stories.forEach(story => {
+                    addStory(story, true);
+                });
+            }
+        };
+
+        function addStory(story, prepend = false) {
+            if (renderedStoryUrls.has(story.url)) return; // Skip duplicates
+            renderedStoryUrls.add(story.url);
+
+            const div = document.createElement('div');
+            div.className = 'story';
+            div.innerHTML = `
+                <h3><a href="${story.url}" target="_blank">${story.title}</a></h3>
+                <p>Points: ${story.points} | Posted: ${new Date(story.posted_at).toLocaleString()}</p>
+            `;
+
+            const storiesDiv = document.getElementById('stories');
+            if (prepend) {
+                storiesDiv.insertBefore(div, storiesDiv.firstChild);
+            } else {
+                storiesDiv.appendChild(div);
+            }
+        }
+
+        ws.onerror = function(error) {
+            console.error('WebSocket error:', error);
+        };
+
+        ws.onclose = function() {
+            alert('WebSocket connection closed. Please refresh the page or try again later.');
+        };
+    </script>
+</body>
+</html>
