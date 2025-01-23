@@ -12,7 +12,7 @@ A real-time web application that scrapes and displays Hacker News stories using 
 1. **Clone and Install**
 ```bash
 $ git clone https://github.com/vink08/Hacker-News-Scrap
-$ cd frontpage
+$ cd Hacker-News-Scrap
 $ npm install
 ```
 
